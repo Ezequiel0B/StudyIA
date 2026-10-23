@@ -1,0 +1,40 @@
+@page "/Materiales/Editar/{id:int?}"
+@model StudyIA.Web.Pages.Materiales.EditarModel
+@{
+    ViewData["Title"] = Model.Id.HasValue ? "Editar material" : "Subir material";
+}
+
+@* Formulario para crear o editar un material. Se puede escribir/pegar el texto o subir un archivo .txt, .md, .csv, .docx o .pdf *@
+<p class="subtitulo">Material de estudio</p>
+<h1>@(Model.Id.HasValue ? "Editar material" : "Subir material")</h1>
+
+<div class="tarjeta">
+    <form method="post" enctype="multipart/form-data" data-cargando="Guardando…">
+        <div asp-validation-summary="ModelOnly" class="aviso aviso-error"></div>
+
+        <label asp-for="Input.MateriaId">1. Selecciona la materia</label>
+        <select asp-for="Input.MateriaId" class="campo">
+            <option value="0">-- Elige una materia --</option>
+            @foreach (var materia in Model.Materias)
+            {
+                <option value="@materia.Id" selected="@(Model.Input.MateriaId == materia.Id)">@materia.Nombre</option>
+            }
+        </select>
+        <span asp-validation-for="Input.MateriaId" class="error-campo"></span>
+
+        <label asp-for="Input.Titulo">2. Título</label>
+        <input asp-for="Input.Titulo" class="campo" />
+        <span asp-validation-for="Input.Titulo" class="error-campo"></span>
+
+        <label asp-for="Input.Contenido">3. Contenido (escríbelo o pégalo aquí)</label>
+        <textarea asp-for="Input.Contenido" class="campo campo-grande" rows="12"></textarea>
+        <span asp-validation-for="Input.Contenido" class="error-campo"></span>
+
+        <label for="archivo">O sube un archivo (.txt, .md, .csv, .docx o .pdf, máximo 5 MB)</label>
+        <input id="archivo" name="Archivo" type="file" accept=".txt,.md,.csv,.docx,.pdf" class="campo" />
+        <p class="texto-porcentaje">Si subes un archivo, su contenido reemplaza al texto escrito arriba.</p>
+
+        <button type="submit" class="boton">Guardar</button>
+        <a asp-page="/Materiales/Index" class="boton boton-secundario">Cancelar</a>
+    </form>
+</div>

@@ -1,0 +1,77 @@
+@page "/Dashboard"
+@model DashboardModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<p class="subtitulo">Hola de nuevo, @User.Identity?.Name</p>
+<h1>Tus materias</h1>
+
+@* Resumen general *@
+<div class="resumen">
+    <div class="tarjeta">
+        <p class="resultado-numero">@Model.Materias.Count</p>
+        <p class="resultado-etiqueta">Materias</p>
+    </div>
+    <div class="tarjeta">
+        <p class="resultado-numero">@Model.TotalMateriales</p>
+        <p class="resultado-etiqueta">Materiales</p>
+    </div>
+    <div class="tarjeta">
+        <p class="resultado-numero">@Model.DominioGeneral%</p>
+        <p class="resultado-etiqueta">Dominio general</p>
+    </div>
+    <div class="tarjeta">
+        <p class="resultado-numero">@Model.MinutosSemana</p>
+        <p class="resultado-etiqueta">Min. estudiados (7 días)</p>
+    </div>
+</div>
+
+@* Próximos exámenes (se administran en el Planificador) *@
+@if (Model.ProximosExamenes.Count > 0)
+{
+    <div class="tarjeta">
+        <h3>Próximos exámenes</h3>
+        @foreach (var examen in Model.ProximosExamenes)
+        {
+            <p>@examen.Fecha.ToString("dd/MM/yyyy") · <strong>@examen.Titulo</strong> (@examen.Materia?.Nombre) · @StudyIA.Web.Pages.PlanificadorModel.DiasRestantes(examen.Fecha)</p>
+        }
+        <a asp-page="/Planificador">Ver planificador →</a>
+    </div>
+}
+
+@if (Model.Materias.Count == 0)
+{
+    <div class="tarjeta">
+        <p>Todavía no tienes materias. Crea la primera para empezar.</p>
+        <a asp-page="/Materias/Editar" class="boton">Crear materia</a>
+    </div>
+}
+else
+{
+    <div class="materias">
+        @foreach (var item in Model.Materias)
+        {
+            <div class="tarjeta">
+                <h3>@item.Materia.Nombre</h3>
+                <div class="barra-fondo">
+                    @* El ancho y el color de la barra dependen del dominio calculado por el sistema *@
+                    <div class="barra-progreso color-@Calculos.ClasificarTema(item.Dominio)" style="width:@(item.Dominio)%"></div>
+                </div>
+                <p class="texto-porcentaje">Dominio: @item.Dominio% · @item.CantidadMateriales material(es) · @item.CantidadEvaluaciones autoevaluación(es)</p>
+                <a asp-page="/Evaluaciones/Index" asp-route-materiaId="@item.Materia.Id">Practicar →</a>
+            </div>
+        }
+    </div>
+}
+
+@* Sugerencia: la materia con menor dominio que tenga material cargado *@
+@if (Model.Sugerida != null)
+{
+    <div class="caja-sugerencia">
+        <p><strong>Refuerza @Model.Sugerida.Materia.Nombre</strong></p>
+        <p>Dominio actual: @Model.Sugerida.Dominio% — la IA priorizará los temas donde fallas más.</p>
+        <br />
+        <a asp-page="/Evaluaciones/Index" asp-route-materiaId="@Model.Sugerida.Materia.Id" class="boton">Iniciar autoevaluación</a>
+    </div>
+}

@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Permite guardar la clave de la IA fuera del código con: dotnet user-secrets set "IA:ApiKey" "..." -->
+    <UserSecretsId>studyia-web-secrets</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Herramientas para crear migraciones: dotnet ef migrations add ... -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.11">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\StudyIA.Domain\StudyIA.Domain.csproj" />
+    <ProjectReference Include="..\StudyIA.Data\StudyIA.Data.csproj" />
+    <ProjectReference Include="..\StudyIA.Services\StudyIA.Services.csproj" />
+  </ItemGroup>
+
+</Project>

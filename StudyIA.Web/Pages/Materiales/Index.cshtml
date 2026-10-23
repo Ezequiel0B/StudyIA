@@ -1,0 +1,52 @@
+@page "/Materiales"
+@model StudyIA.Web.Pages.Materiales.IndexModel
+@{
+    ViewData["Title"] = "Material de estudio";
+}
+
+@* Lista de apuntes. Se pueden filtrar por materia. *@
+<p class="subtitulo">Organiza tu contenido</p>
+<h1>Material de estudio</h1>
+
+<form method="get" class="fila-filtro">
+    <select name="materiaId" class="campo">
+        <option value="">Todas las materias</option>
+        @foreach (var materia in Model.Materias)
+        {
+            <option value="@materia.Id" selected="@(Model.MateriaId == materia.Id)">@materia.Nombre</option>
+        }
+    </select>
+    <button type="submit" class="boton boton-secundario">Filtrar</button>
+    <a asp-page="/Materiales/Editar" asp-route-materiaId="@Model.MateriaId" class="boton">+ Subir material</a>
+</form>
+
+@if (Model.Lista.Count == 0)
+{
+    <div class="tarjeta"><p>No hay material para mostrar. Sube tus apuntes para que la IA pueda ayudarte.</p></div>
+}
+else
+{
+    <table class="tabla">
+        <thead>
+            <tr><th>Título</th><th>Materia</th><th>Fecha</th><th>Acciones</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var material in Model.Lista)
+            {
+                <tr>
+                    <td>@material.Titulo</td>
+                    <td>@material.Materia?.Nombre</td>
+                    <td>@material.FechaSubida.ToLocalTime().ToString("dd/MM/yyyy")</td>
+                    <td class="acciones">
+                        <a asp-page="/Materiales/Ver" asp-route-id="@material.Id">Ver</a>
+                        <a asp-page="/Materiales/Editar" asp-route-id="@material.Id">Editar</a>
+                        <form method="post" asp-page-handler="Eliminar" asp-route-id="@material.Id"
+                              onsubmit="return confirm('¿Eliminar este material?');">
+                            <button type="submit" class="boton-peligro">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

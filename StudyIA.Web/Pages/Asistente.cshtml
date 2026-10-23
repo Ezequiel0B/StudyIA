@@ -1,0 +1,65 @@
+@page "/Asistente"
+@model AsistenteModel
+@{
+    ViewData["Title"] = "Asistente StudyIA";
+}
+
+@* Chat con el Asistente StudyIA: responde usando el material que subió el estudiante *@
+<p class="subtitulo">Impulsado por IA generativa</p>
+<h1>Asistente StudyIA</h1>
+<p class="texto-porcentaje">Motor actual: @Model.Motor</p>
+@if (!Model.IaActiva)
+{
+    <div class="aviso aviso-info">
+        Estás en <strong>modo local</strong>: el asistente busca las frases de tu material que se parecen a tu pregunta.
+        Para respuestas con IA generativa, configura una clave (ver Manual de instalación, sección 4).
+    </div>
+}
+
+<form method="get" class="fila-filtro">
+    <select name="materiaId" class="campo">
+        <option value="">Usar el material de todas mis materias</option>
+        @foreach (var materia in Model.Materias)
+        {
+            <option value="@materia.Id" selected="@(Model.MateriaId == materia.Id)">@materia.Nombre</option>
+        }
+    </select>
+    <button type="submit" class="boton boton-secundario">Cambiar</button>
+</form>
+
+<div class="chat-caja">
+    @if (Model.Historial.Count == 0)
+    {
+        <div class="mensaje mensaje-ia">Hola, soy el Asistente StudyIA. Pregúntame sobre tu material de estudio.</div>
+    }
+    @foreach (var mensaje in Model.Historial)
+    {
+        <div class="mensaje @(mensaje.Rol == "usuario" ? "mensaje-usuario" : "mensaje-ia")">
+            @mensaje.Texto
+            @if (mensaje.Rol == "asistente")
+            {
+                <span class="etiqueta-motor">@(mensaje.GeneradoConIa ? "IA en la nube" : "Modo local")</span>
+            }
+        </div>
+    }
+</div>
+
+<form method="post" asp-page-handler="Preguntar" class="chat-input-fila" data-cargando="Pensando…">
+    <input type="hidden" name="materiaId" value="@Model.MateriaId" />
+    <input asp-for="Pregunta" class="campo" placeholder="Escribe tu pregunta..." maxlength="1000" autocomplete="off" />
+    <button type="submit" class="boton">Enviar</button>
+</form>
+
+<form method="post" asp-page-handler="Limpiar" class="espacio-arriba">
+    <button type="submit" class="boton boton-secundario">Borrar conversación</button>
+</form>
+
+<script>
+    // Al abrir el chat se baja hasta el último mensaje.
+    (function () {
+        var caja = document.querySelector('.chat-caja');
+        if (caja) { caja.scrollTop = caja.scrollHeight; }
+        var ultimo = document.querySelector('.chat-caja .mensaje:last-child');
+        if (ultimo && ultimo.scrollIntoView) { ultimo.scrollIntoView({ block: 'end' }); }
+    })();
+</script>

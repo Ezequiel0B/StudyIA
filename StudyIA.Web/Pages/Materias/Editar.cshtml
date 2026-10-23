@@ -1,0 +1,26 @@
+@page "/Materias/Editar/{id:int?}"
+@model StudyIA.Web.Pages.Materias.EditarModel
+@{
+    ViewData["Title"] = Model.Id.HasValue ? "Editar materia" : "Nueva materia";
+}
+
+@* Un solo formulario sirve para crear (sin id) y para editar (con id) *@
+<p class="subtitulo">Materias</p>
+<h1>@(Model.Id.HasValue ? "Editar materia" : "Nueva materia")</h1>
+
+<div class="tarjeta">
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="aviso aviso-error"></div>
+
+        <label asp-for="Input.Nombre">Nombre</label>
+        <input asp-for="Input.Nombre" class="campo" />
+        <span asp-validation-for="Input.Nombre" class="error-campo"></span>
+
+        <label asp-for="Input.Descripcion">Descripción (opcional)</label>
+        <input asp-for="Input.Descripcion" class="campo" />
+        <span asp-validation-for="Input.Descripcion" class="error-campo"></span>
+
+        <button type="submit" class="boton">Guardar</button>
+        <a asp-page="/Materias/Index" class="boton boton-secundario">Cancelar</a>
+    </form>
+</div>

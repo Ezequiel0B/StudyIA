@@ -1,0 +1,56 @@
+@page "/Evaluaciones/Resultado/{id:int}"
+@model StudyIA.Web.Pages.Evaluaciones.ResultadoModel
+@{
+    ViewData["Title"] = "Resultados";
+}
+
+@* Resultado de una autoevaluación: puntaje, áreas a reforzar y revisión de cada pregunta *@
+@if (Model.Evaluacion != null)
+{
+    <p class="subtitulo">@Model.Evaluacion.Materia?.Nombre</p>
+    <h1>Resultados de tu autoevaluación</h1>
+
+    <div class="resumen">
+        <div class="tarjeta">
+            <p class="resultado-numero">@Model.Evaluacion.Correctas/@Model.Evaluacion.Total</p>
+            <p class="resultado-etiqueta">Correctas</p>
+        </div>
+        <div class="tarjeta">
+            <p class="resultado-numero">@Model.Evaluacion.Porcentaje%</p>
+            <p class="resultado-etiqueta">Puntaje</p>
+        </div>
+        <div class="tarjeta">
+            <p class="resultado-numero">@Model.DominioMateria%</p>
+            <p class="resultado-etiqueta">Dominio de la materia</p>
+        </div>
+    </div>
+
+    <h3>Áreas a reforzar</h3>
+    @foreach (var tema in Model.Temas)
+    {
+        <div class="area-refuerzo area-@Calculos.ClasificarTema(tema.Porcentaje)">
+            @tema.Tema — @tema.Porcentaje% (@tema.Correctas de @tema.Total correctas)
+        </div>
+    }
+
+    <br />
+    <a asp-page="/Evaluaciones/Index" asp-route-materiaId="@Model.Evaluacion.MateriaId" class="boton">Reforzar ahora</a>
+    <a asp-page="/Dashboard" class="boton boton-secundario">Volver al dashboard</a>
+
+    <h3>Revisión de las preguntas</h3>
+    @foreach (var pregunta in Model.Evaluacion.Preguntas)
+    {
+        bool acerto = pregunta.RespuestaUsuario == pregunta.RespuestaCorrecta;
+        <div class="pregunta-caja">
+            <p class="nivel-etiqueta">Tema: @pregunta.Tema</p>
+            <p><strong>@pregunta.Enunciado</strong></p>
+            <p>
+                Tu respuesta: <strong>@(pregunta.RespuestaUsuario ?? "sin responder")</strong> ·
+                Correcta: <strong>@pregunta.RespuestaCorrecta</strong>
+            </p>
+            <div class="area-refuerzo @(acerto ? "area-bien" : "area-mal")">
+                @(acerto ? "Correcto." : "Incorrecto.") @pregunta.Explicacion
+            </div>
+        </div>
+    }
+}

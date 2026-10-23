@@ -1,0 +1,29 @@
+@page "/"
+@model LoginModel
+@{
+    ViewData["Title"] = "Iniciar sesión";
+}
+
+@* Pantalla de inicio de sesión: es la primera que ve el usuario (ruta "/") *@
+<div class="tarjeta login-caja">
+    <h1 class="login-titulo">StudyIA</h1>
+    <p class="subtitulo login-subtitulo">Tu espacio de aprendizaje</p>
+
+    <form method="post">
+        @* Aquí aparecen los errores generales, por ejemplo "Usuario o contraseña incorrectos" *@
+        <div asp-validation-summary="ModelOnly" class="aviso aviso-error"></div>
+
+        <label asp-for="Input.NombreUsuario">Usuario</label>
+        <input asp-for="Input.NombreUsuario" class="campo" placeholder="tu.usuario" autocomplete="username" />
+        <span asp-validation-for="Input.NombreUsuario" class="error-campo"></span>
+
+        <label asp-for="Input.Contrasena">Contraseña</label>
+        <input asp-for="Input.Contrasena" class="campo" placeholder="********" autocomplete="current-password" />
+        <span asp-validation-for="Input.Contrasena" class="error-campo"></span>
+
+        <button type="submit" class="boton boton-ancho">Ingresar</button>
+    </form>
+
+    <p class="texto-centro">¿No tienes cuenta? <a asp-page="/Registro">Regístrate</a></p>
+    <p class="texto-porcentaje texto-centro">Cuenta de prueba: estudiante / Estudiante123*</p>
+</div>

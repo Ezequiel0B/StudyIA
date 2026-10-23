@@ -1,0 +1,35 @@
+@page "/Evaluaciones/Resolver/{id:int}"
+@model StudyIA.Web.Pages.Evaluaciones.ResolverModel
+@{
+    ViewData["Title"] = "Resolver autoevaluación";
+}
+
+@* El estudiante responde las preguntas de la autoevaluación *@
+@if (Model.Evaluacion != null)
+{
+    <p class="subtitulo">@Model.Evaluacion.Materia?.Nombre</p>
+    <h1>Autoevaluación (@Model.Evaluacion.Nivel)</h1>
+    <p class="texto-porcentaje">
+        @Model.Evaluacion.Preguntas.Count preguntas · generadas con @(Model.Evaluacion.GeneradaConIa ? "IA en la nube" : "modo local")
+    </p>
+
+    <form method="post">
+        @for (int i = 0; i < Model.Evaluacion.Preguntas.Count; i++)
+        {
+            var pregunta = Model.Evaluacion.Preguntas[i];
+            <div class="pregunta-caja">
+                <p class="nivel-etiqueta">Pregunta @(i + 1) de @Model.Evaluacion.Preguntas.Count · Tema: @pregunta.Tema</p>
+                <p><strong>@pregunta.Enunciado</strong></p>
+
+                @* El nombre "Respuestas[id]" permite recibir todas las respuestas en un diccionario *@
+                <label class="opcion"><input type="radio" name="Respuestas[@pregunta.Id]" value="A" /> A) @pregunta.OpcionA</label>
+                <label class="opcion"><input type="radio" name="Respuestas[@pregunta.Id]" value="B" /> B) @pregunta.OpcionB</label>
+                <label class="opcion"><input type="radio" name="Respuestas[@pregunta.Id]" value="C" /> C) @pregunta.OpcionC</label>
+                <label class="opcion"><input type="radio" name="Respuestas[@pregunta.Id]" value="D" /> D) @pregunta.OpcionD</label>
+            </div>
+        }
+
+        <button type="submit" class="boton">Terminar y calificar</button>
+        <a asp-page="/Evaluaciones/Index" class="boton boton-secundario">Salir</a>
+    </form>
+}

@@ -1,0 +1,110 @@
+@page "/Evaluaciones"
+@model StudyIA.Web.Pages.Evaluaciones.IndexModel
+@{
+    ViewData["Title"] = "Autoevaluación";
+}
+
+@* Aquí el estudiante elige una materia y genera una autoevaluación adaptativa con IA *@
+<p class="subtitulo">Practica con IA</p>
+<h1>Autoevaluación adaptativa</h1>
+
+@* Paso 1: elegir la materia *@
+<div class="tarjeta">
+    <h3>1. Elige la materia</h3>
+    <form method="get" class="fila-filtro">
+        <select name="materiaId" class="campo">
+            <option value="">-- Selecciona --</option>
+            @foreach (var item in Model.Materias)
+            {
+                <option value="@item.Materia.Id" selected="@(Model.MateriaId == item.Materia.Id)">@item.Materia.Nombre (dominio @item.Dominio%)</option>
+            }
+        </select>
+        <button type="submit" class="boton boton-secundario">Continuar</button>
+    </form>
+</div>
+
+@* Paso 2: configurar y generar (solo si ya se eligió una materia) *@
+@if (Model.MateriaSeleccionada != null)
+{
+    <div class="tarjeta">
+        <h3>2. Genera tu autoevaluación de @Model.MateriaSeleccionada.Materia.Nombre</h3>
+        <p>Dominio actual: <strong>@Model.MateriaSeleccionada.Dominio%</strong> · Nivel sugerido: <strong>@Model.NivelSugerido</strong></p>
+
+        @if (Model.Temas.Count > 0)
+        {
+            <p>Tu desempeño por tema (la IA dará prioridad a los más débiles):</p>
+            @foreach (var tema in Model.Temas)
+            {
+                <div class="area-refuerzo area-@Calculos.ClasificarTema(tema.Porcentaje)">
+                    @tema.Tema — @tema.Porcentaje% (@tema.Correctas de @tema.Total)
+                </div>
+            }
+        }
+
+        <form method="post" asp-page-handler="Generar" data-cargando="Generando preguntas…">
+            <div asp-validation-summary="ModelOnly" class="aviso aviso-error"></div>
+            <input type="hidden" asp-for="Input.MateriaId" />
+
+            <label asp-for="Input.Nivel">Nivel de dificultad</label>
+            <select asp-for="Input.Nivel" class="campo">
+                @foreach (var nivel in AutoevaluacionService.Niveles)
+                {
+                    <option value="@nivel" selected="@(Model.Input.Nivel == nivel)">@nivel</option>
+                }
+            </select>
+
+            <label asp-for="Input.Cantidad">Número de preguntas (3 a 10)</label>
+            <input asp-for="Input.Cantidad" type="number" min="3" max="10" class="campo" />
+            <span asp-validation-for="Input.Cantidad" class="error-campo"></span>
+
+            <button type="submit" class="boton">Generar autoevaluación</button>
+        </form>
+        <p class="texto-porcentaje">Motor de IA: @Model.Motor</p>
+    </div>
+}
+
+@* Historial *@
+<h3>Historial</h3>
+@if (Model.Historial.Count == 0)
+{
+    <div class="tarjeta"><p>Todavía no has hecho autoevaluaciones.</p></div>
+}
+else
+{
+    <table class="tabla">
+        <thead>
+            <tr><th>Fecha</th><th>Materia</th><th>Nivel</th><th>Resultado</th><th>Preguntas generadas con</th><th></th></tr>
+        </thead>
+        <tbody>
+            @foreach (var evaluacion in Model.Historial)
+            {
+                <tr>
+                    <td>@evaluacion.Fecha.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>@evaluacion.Materia?.Nombre</td>
+                    <td>@evaluacion.Nivel</td>
+                    <td>
+                        @if (evaluacion.Finalizada)
+                        {
+                            @($"{evaluacion.Correctas}/{evaluacion.Total} ({evaluacion.Porcentaje}%)")
+                        }
+                        else
+                        {
+                            <span>Sin terminar</span>
+                        }
+                    </td>
+                    <td>@(evaluacion.GeneradaConIa ? "IA en la nube" : "Modo local")</td>
+                    <td class="acciones">
+                        @if (evaluacion.Finalizada)
+                        {
+                            <a asp-page="/Evaluaciones/Resultado" asp-route-id="@evaluacion.Id">Ver resultado</a>
+                        }
+                        else
+                        {
+                            <a asp-page="/Evaluaciones/Resolver" asp-route-id="@evaluacion.Id">Continuar</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

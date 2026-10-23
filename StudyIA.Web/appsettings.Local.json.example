@@ -1,0 +1,8 @@
+{
+  "IA": {
+    "Proveedor": "OpenAI",
+    "Endpoint": "https://api.groq.com/openai/v1",
+    "ApiKey": "PEGA-AQUI-TU-CLAVE",
+    "Modelo": "llama-3.3-70b-versatile"
+  }
+}

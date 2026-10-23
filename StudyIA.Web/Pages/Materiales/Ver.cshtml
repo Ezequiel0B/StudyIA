@@ -1,0 +1,35 @@
+@page "/Materiales/Ver/{id:int}"
+@model StudyIA.Web.Pages.Materiales.VerModel
+@{
+    ViewData["Title"] = Model.Material?.Titulo ?? "Material";
+}
+
+@* Muestra un material completo y permite pedirle un resumen a la IA *@
+@if (Model.Material != null)
+{
+    <p class="subtitulo">@Model.Material.Materia?.Nombre</p>
+    <h1>@Model.Material.Titulo</h1>
+
+    <div class="tarjeta">
+        <h3>Resumen automático</h3>
+        @if (string.IsNullOrWhiteSpace(Model.Material.Resumen))
+        {
+            <p class="texto-porcentaje">Todavía no hay resumen. Motor disponible: @Model.Motor</p>
+        }
+        else
+        {
+            <div class="texto-material">@Model.Material.Resumen</div>
+        }
+        <form method="post" asp-page-handler="Resumir" asp-route-id="@Model.Material.Id" data-cargando="Resumiendo…">
+            <button type="submit" class="boton">Resumir con IA</button>
+        </form>
+    </div>
+
+    <div class="tarjeta">
+        <h3>Contenido</h3>
+        <div class="texto-material">@Model.Material.Contenido</div>
+    </div>
+
+    <a asp-page="/Materiales/Editar" asp-route-id="@Model.Material.Id" class="boton">Editar</a>
+    <a asp-page="/Materiales/Index" asp-route-materiaId="@Model.Material.MateriaId" class="boton boton-secundario">Volver</a>
+}

@@ -1,0 +1,34 @@
+# Visual Studio
+.vs/
+bin/
+obj/
+TestResults/
+
+# Archivos personales
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Configuración secreta
+.env
+
+# Publicaciones y registros
+publish/
+artifacts/
+*.log
+logs/
+
+# Base de datos y respaldos locales
+*.bak
+*.mdf
+*.ldf
+
+# Certificados y claves
+*.pfx
+*.p12
+*.key
+
+# Windows
+Thumbs.db
+Desktop.ini

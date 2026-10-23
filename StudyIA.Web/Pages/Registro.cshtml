@@ -1,0 +1,35 @@
+@page "/Registro"
+@model RegistroModel
+@{
+    ViewData["Title"] = "Crear cuenta";
+}
+
+@* Formulario para crear una cuenta nueva *@
+<div class="tarjeta login-caja">
+    <h1 class="login-titulo">Crear cuenta</h1>
+    <p class="subtitulo login-subtitulo">Únete a StudyIA</p>
+
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="aviso aviso-error"></div>
+
+        <label asp-for="Input.Nombre">Nombre</label>
+        <input asp-for="Input.Nombre" class="campo" />
+        <span asp-validation-for="Input.Nombre" class="error-campo"></span>
+
+        <label asp-for="Input.NombreUsuario">Usuario (3 a 30 caracteres: letras, números, . - _)</label>
+        <input asp-for="Input.NombreUsuario" class="campo" autocomplete="username" />
+        <span asp-validation-for="Input.NombreUsuario" class="error-campo"></span>
+
+        <label asp-for="Input.Contrasena">Contraseña (mínimo 8, con mayúscula, minúscula y número)</label>
+        <input asp-for="Input.Contrasena" class="campo" />
+        <span asp-validation-for="Input.Contrasena" class="error-campo"></span>
+
+        <label asp-for="Input.Confirmar">Repite la contraseña</label>
+        <input asp-for="Input.Confirmar" class="campo" />
+        <span asp-validation-for="Input.Confirmar" class="error-campo"></span>
+
+        <button type="submit" class="boton boton-ancho">Registrarme</button>
+    </form>
+
+    <p class="texto-centro">¿Ya tienes cuenta? <a asp-page="/Login">Inicia sesión</a></p>
+</div>

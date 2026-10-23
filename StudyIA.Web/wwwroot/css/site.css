@@ -1,0 +1,205 @@
+/* ==========================================================
+   Estilos de StudyIA. Mismos colores y diseño de la Fase I.
+   ========================================================== */
+
+* { box-sizing: border-box; }
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f4fa;
+    color: #222;
+    margin: 0;
+}
+
+a { color: #2b2153; }
+
+/* --- Menú de navegación --- */
+.navbar {
+    background: #2b2153;
+    min-height: 70px;
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    flex-wrap: wrap;
+}
+.navbar a { color: #d9d3ed; text-decoration: none; font-size: 15px; }
+.navbar a:hover { color: white; }
+.navbar .logo { color: white; font-size: 24px; font-weight: bold; margin-right: 10px; }
+.navbar .espacio { flex: 1; }
+.navbar .usuario { color: #d9d3ed; font-size: 14px; }
+.form-salir { margin: 0; }
+.boton-salir {
+    background: transparent;
+    border: 1px solid #d9d3ed;
+    color: #d9d3ed;
+    border-radius: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+.boton-salir:hover { background: #3d3170; color: white; }
+
+/* --- Contenido --- */
+.contenido {
+    width: min(960px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 30px 0 50px;
+    min-height: calc(100vh - 125px);
+}
+h1 { font-size: 26px; margin: 0 0 20px; }
+h3 { margin-top: 0; }
+.subtitulo {
+    color: #0ea893;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 0 0 6px;
+}
+.texto-centro { text-align: center; }
+.espacio-arriba { margin-top: 15px; }
+
+/* --- Mensajes --- */
+.aviso { padding: 12px 15px; border-radius: 6px; margin-bottom: 15px; font-size: 14px; }
+.aviso-ok { background: #e6f4e4; color: #3d7a37; }
+.aviso-error { background: #fbe5e3; color: #b3382c; }
+.aviso-error:empty { display: none; }
+.error-campo { color: #b3382c; font-size: 13px; display: block; margin: -8px 0 12px; }
+
+/* --- Tarjetas --- */
+.tarjeta {
+    background: white;
+    border: 1px solid #e0ddee;
+    border-radius: 8px;
+    padding: 18px;
+    margin-bottom: 15px;
+}
+.materias, .resumen { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 15px; }
+.materias .tarjeta, .resumen .tarjeta { margin-bottom: 0; }
+
+/* --- Barra de progreso --- */
+.barra-fondo { background: #e0ddee; height: 10px; border-radius: 5px; overflow: hidden; }
+.barra-progreso { height: 10px; border-radius: 5px; }
+.color-mal { background: #d8564b; }
+.color-regular { background: #e8a33d; }
+.color-bien { background: #5fae55; }
+.texto-porcentaje { color: #666; font-size: 12px; }
+
+/* --- Caja de sugerencia --- */
+.caja-sugerencia { background: #fbe9e1; border-radius: 8px; padding: 18px; margin-top: 20px; }
+.caja-sugerencia p { margin: 0 0 6px; }
+
+/* --- Botones --- */
+.boton {
+    display: inline-block;
+    background: #2b2153;
+    color: white;
+    border: 0;
+    border-radius: 6px;
+    padding: 10px 18px;
+    font-size: 14px;
+    text-decoration: none;
+    cursor: pointer;
+}
+.boton:hover { opacity: .9; }
+.boton-secundario { background: white; color: #222; border: 1px solid #ccc; }
+.boton-ancho { width: 100%; margin-bottom: 10px; }
+.boton-peligro {
+    background: white;
+    color: #b3382c;
+    border: 1px solid #d8564b;
+    border-radius: 6px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+/* --- Formularios --- */
+label { display: block; font-size: 14px; margin-top: 4px; }
+.campo {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin: 5px 0 15px;
+    font-size: 14px;
+    font-family: inherit;
+}
+.campo-grande { min-height: 220px; }
+.fila-filtro { display: flex; gap: 10px; align-items: flex-start; flex-wrap: wrap; margin-bottom: 15px; }
+.fila-filtro .campo { width: auto; min-width: 260px; margin: 0; }
+
+/* --- Tablas --- */
+.tabla { width: 100%; border-collapse: collapse; background: white; border: 1px solid #e0ddee; margin-bottom: 20px; }
+.tabla th { background: #2b2153; color: white; text-align: left; padding: 10px; font-size: 14px; }
+.tabla td { padding: 10px; border-top: 1px solid #e0ddee; font-size: 14px; vertical-align: middle; }
+.acciones { display: flex; gap: 12px; align-items: center; }
+.acciones form { margin: 0; }
+
+/* --- Autoevaluación --- */
+.pregunta-caja { background: white; border: 1px solid #e0ddee; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+.nivel-etiqueta { color: #0ea893; font-weight: bold; font-size: 13px; }
+.opcion { display: block; background: white; border: 1px solid #ccc; border-radius: 6px; padding: 12px; margin-bottom: 10px; cursor: pointer; }
+.opcion:hover { background: #f8f7fb; }
+
+/* --- Resultados --- */
+.resultado-numero { font-size: 24px; font-weight: bold; text-align: center; margin: 0; }
+.resultado-etiqueta { font-size: 12px; color: #666; text-align: center; margin: 6px 0 0; }
+.area-refuerzo { padding: 11px 15px; border-radius: 6px; margin-bottom: 8px; font-size: 14px; }
+.area-mal { background: #fbe5e3; color: #b3382c; }
+.area-regular { background: #fbf1de; color: #a5730d; }
+.area-bien { background: #e6f4e4; color: #3d7a37; }
+
+/* --- Texto de materiales --- */
+.texto-material { white-space: pre-wrap; line-height: 1.5; font-size: 14px; margin-bottom: 15px; }
+
+/* --- Chat --- */
+.chat-caja { display: flex; flex-direction: column; margin-bottom: 20px; }
+.mensaje { max-width: 75%; padding: 12px 16px; border-radius: 10px; margin-bottom: 10px; font-size: 14px; line-height: 1.45; white-space: pre-wrap; }
+.mensaje-usuario { background: #f26a4b; color: white; align-self: flex-end; }
+.mensaje-ia { background: #f0eef8; align-self: flex-start; }
+.etiqueta-motor { display: block; font-size: 11px; color: #777; margin-top: 6px; }
+.chat-input-fila { display: flex; gap: 10px; align-items: flex-start; }
+.chat-input-fila .campo { flex: 1; margin: 0; }
+
+/* --- Login y registro --- */
+.login-caja { max-width: 420px; margin: 50px auto; }
+.login-titulo { text-align: center; }
+.login-subtitulo { text-align: center; }
+
+.pie-pagina { text-align: center; font-size: 12px; color: #888; padding: 20px; }
+
+/* --- Celulares --- */
+@media (max-width: 700px) {
+    .navbar { padding: 14px 18px; gap: 12px; }
+    .contenido { width: calc(100% - 30px); padding-top: 25px; }
+    .materias, .resumen { grid-template-columns: 1fr; }
+    .mensaje { max-width: 92%; }
+    .chat-input-fila { flex-direction: column; }
+    .chat-input-fila .campo { width: 100%; }
+    .fila-filtro .campo { min-width: 0; width: 100%; }
+}
+
+/* ==========================================================
+   Mejoras de diseño (Fase 3)
+   ========================================================== */
+.tarjeta { box-shadow: 0 1px 4px rgba(43, 33, 83, 0.10); }
+.campo:focus, select:focus, textarea:focus { outline: 2px solid #0ea893; outline-offset: 1px; }
+.boton, .boton-salir { transition: background 0.15s, transform 0.05s; }
+.boton:active { transform: scale(0.98); }
+.navbar a.usuario { text-decoration: underline; }
+@media (min-width: 641px) { .resumen { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); } }
+
+/* Tablas del planificador */
+.tabla { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+.tabla th, .tabla td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #e3e0f0; font-size: 14px; }
+.tabla th { color: #2b2153; font-size: 13px; text-transform: uppercase; }
+.tabla form { margin: 0; }
+
+/* En celulares el menú y las tablas se adaptan */
+@media (max-width: 640px) {
+    .navbar { padding: 10px 16px; gap: 12px; }
+    .tabla { display: block; overflow-x: auto; }
+}
+
+/* --- Avisos informativos y botones ocupados --- */
+.aviso-info { background: #e8f1fb; color: #24527a; }
+.boton:disabled, .boton-salir:disabled { opacity: 0.6; cursor: wait; }

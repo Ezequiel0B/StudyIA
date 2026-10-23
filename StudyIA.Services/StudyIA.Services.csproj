@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Para usar ILogger, IOptions y HttpClient dentro de los servicios -->
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Para leer el texto de los archivos PDF que sube el estudiante -->
+	  <PackageReference Include="PdfPig" Version="0.1.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\StudyIA.Domain\StudyIA.Domain.csproj" />
+    <ProjectReference Include="..\StudyIA.Data\StudyIA.Data.csproj" />
+  </ItemGroup>
+
+</Project>
+    

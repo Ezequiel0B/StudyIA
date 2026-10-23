@@ -1,0 +1,38 @@
+@page "/Perfil"
+@model PerfilModel
+@{
+    ViewData["Title"] = "Mi perfil";
+}
+
+<p class="subtitulo">Cuenta</p>
+<h1>Mi perfil</h1>
+
+@if (Model.Usuario != null)
+{
+    <div class="tarjeta">
+        <p><strong>Nombre:</strong> @Model.Usuario.Nombre</p>
+        <p><strong>Usuario:</strong> @Model.Usuario.NombreUsuario</p>
+        <p><strong>Miembro desde:</strong> @Model.Usuario.FechaRegistro.ToString("dd/MM/yyyy")</p>
+    </div>
+}
+
+<div class="tarjeta">
+    <h3>Cambiar contraseña</h3>
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="aviso aviso-error"></div>
+
+        <label asp-for="Input.Actual">Contraseña actual</label>
+        <input asp-for="Input.Actual" class="campo" autocomplete="current-password" />
+        <span asp-validation-for="Input.Actual" class="error-campo"></span>
+
+        <label asp-for="Input.Nueva">Nueva contraseña (mínimo 8, con mayúscula, minúscula y número)</label>
+        <input asp-for="Input.Nueva" class="campo" autocomplete="new-password" />
+        <span asp-validation-for="Input.Nueva" class="error-campo"></span>
+
+        <label asp-for="Input.Confirmar">Repite la nueva contraseña</label>
+        <input asp-for="Input.Confirmar" class="campo" autocomplete="new-password" />
+        <span asp-validation-for="Input.Confirmar" class="error-campo"></span>
+
+        <button type="submit" class="boton">Guardar contraseña</button>
+    </form>
+</div>

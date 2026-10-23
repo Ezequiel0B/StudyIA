@@ -1,0 +1,41 @@
+@page "/Materias"
+@model StudyIA.Web.Pages.Materias.IndexModel
+@{
+    ViewData["Title"] = "Materias";
+}
+
+@* CRUD de materias: aquí se listan, y desde aquí se crean, editan y eliminan *@
+<p class="subtitulo">Organiza tu ciclo</p>
+<h1>Mis materias</h1>
+
+<p><a asp-page="/Materias/Editar" class="boton">+ Nueva materia</a></p>
+
+@if (Model.Lista.Count == 0)
+{
+    <div class="tarjeta"><p>No tienes materias todavía.</p></div>
+}
+else
+{
+    <table class="tabla">
+        <thead>
+            <tr><th>Nombre</th><th>Descripción</th><th>Acciones</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var materia in Model.Lista)
+            {
+                <tr>
+                    <td>@materia.Nombre</td>
+                    <td>@materia.Descripcion</td>
+                    <td class="acciones">
+                        <a asp-page="/Materiales/Index" asp-route-materiaId="@materia.Id">Material</a>
+                        <a asp-page="/Materias/Editar" asp-route-id="@materia.Id">Editar</a>
+                        <form method="post" asp-page-handler="Eliminar" asp-route-id="@materia.Id"
+                              onsubmit="return confirm('¿Eliminar la materia y todo su material y autoevaluaciones?');">
+                            <button type="submit" class="boton-peligro">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

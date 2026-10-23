@@ -1,0 +1,118 @@
+@page "/Planificador"
+@model PlanificadorModel
+@{
+    ViewData["Title"] = "Planificador";
+}
+
+<p class="subtitulo">Organiza tu estudio</p>
+<h1>Planificador</h1>
+
+@if (Model.Materias.Count == 0)
+{
+    <div class="tarjeta">
+        <p>Primero crea una materia para poder planificar exámenes y registrar tu estudio.</p>
+        <a asp-page="/Materias/Editar" class="boton">Crear materia</a>
+    </div>
+}
+else
+{
+    @* ---------- Exámenes ---------- *@
+    <div class="tarjeta">
+        <h3>Próximos exámenes</h3>
+
+        @if (Model.Examenes.Count == 0)
+        {
+            <p class="texto-porcentaje">No tienes exámenes planificados.</p>
+        }
+        else
+        {
+            <table class="tabla">
+                <thead><tr><th>Examen</th><th>Materia</th><th>Fecha</th><th>Faltan</th><th></th></tr></thead>
+                <tbody>
+                @foreach (var examen in Model.Examenes)
+                {
+                    <tr>
+                        <td>@examen.Titulo</td>
+                        <td>@examen.Materia?.Nombre</td>
+                        <td>@examen.Fecha.ToString("dd/MM/yyyy")</td>
+                        <td>@PlanificadorModel.DiasRestantes(examen.Fecha)</td>
+                        <td>
+                            <form method="post" asp-page-handler="EliminarExamen" asp-route-id="@examen.Id">
+                                <button type="submit" class="boton boton-secundario">Quitar</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+
+        <form method="post" asp-page-handler="Examen" class="espacio-arriba">
+            <label for="ex-materia">Materia</label>
+            <select id="ex-materia" name="materiaId" class="campo">
+                @foreach (var materia in Model.Materias)
+                {
+                    <option value="@materia.Id">@materia.Nombre</option>
+                }
+            </select>
+
+            <label for="ex-titulo">Título (por ejemplo: Parcial 2)</label>
+            <input id="ex-titulo" name="titulo" class="campo" maxlength="150" />
+
+            <label for="ex-fecha">Fecha</label>
+            <input id="ex-fecha" name="fecha" type="date" class="campo" />
+
+            <label for="ex-notas">Notas (opcional)</label>
+            <input id="ex-notas" name="notas" class="campo" maxlength="300" />
+
+            <button type="submit" class="boton">Agregar examen</button>
+        </form>
+    </div>
+
+    @* ---------- Seguimiento del estudio ---------- *@
+    <div class="tarjeta">
+        <h3>Seguimiento del estudio</h3>
+        <p class="texto-porcentaje">Esta semana has estudiado <strong>@Model.MinutosSemana</strong> minutos.</p>
+
+        @if (Model.Sesiones.Count > 0)
+        {
+            <table class="tabla">
+                <thead><tr><th>Fecha</th><th>Materia</th><th>Tema</th><th>Minutos</th><th></th></tr></thead>
+                <tbody>
+                @foreach (var sesion in Model.Sesiones)
+                {
+                    <tr>
+                        <td>@sesion.Fecha.ToString("dd/MM/yyyy")</td>
+                        <td>@sesion.Materia?.Nombre</td>
+                        <td>@sesion.Tema</td>
+                        <td>@sesion.Minutos</td>
+                        <td>
+                            <form method="post" asp-page-handler="EliminarSesion" asp-route-id="@sesion.Id">
+                                <button type="submit" class="boton boton-secundario">Quitar</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+
+        <form method="post" asp-page-handler="Sesion" class="espacio-arriba">
+            <label for="se-materia">Materia</label>
+            <select id="se-materia" name="materiaId" class="campo">
+                @foreach (var materia in Model.Materias)
+                {
+                    <option value="@materia.Id">@materia.Nombre</option>
+                }
+            </select>
+
+            <label for="se-minutos">Minutos estudiados (5 a 600)</label>
+            <input id="se-minutos" name="minutos" type="number" min="5" max="600" value="30" class="campo" />
+
+            <label for="se-tema">Tema (opcional)</label>
+            <input id="se-tema" name="tema" class="campo" maxlength="200" />
+
+            <button type="submit" class="boton">Registrar sesión</button>
+        </form>
+    </div>
+}

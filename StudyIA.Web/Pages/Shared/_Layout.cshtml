@@ -1,0 +1,63 @@
+@*
+    Plantilla que comparten todas las páginas: menú de arriba, mensajes y pie de página.
+    El contenido de cada pantalla se inserta donde dice RenderBody.
+*@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - StudyIA</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    @* El menú solo se muestra cuando el usuario ya inició sesión *@
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <nav class="navbar">
+            <a class="logo" asp-page="/Dashboard">StudyIA</a>
+            <a asp-page="/Dashboard">Dashboard</a>
+            <a asp-page="/Materias/Index">Materias</a>
+            <a asp-page="/Materiales/Index">Material</a>
+            <a asp-page="/Evaluaciones/Index">Autoevaluación</a>
+            <a asp-page="/Asistente">Asistente IA</a>
+            <a asp-page="/Planificador">Planificador</a>
+            <span class="espacio"></span>
+            <a asp-page="/Perfil" class="usuario">@User.Identity?.Name</a>
+            <form method="post" asp-page="/Logout" class="form-salir">
+                <button type="submit" class="boton-salir">Salir</button>
+            </form>
+        </nav>
+    }
+
+    <main class="contenido">
+        @* Mensajes de una sola vez (se guardan en TempData antes de redirigir) *@
+        @if (TempData["Mensaje"] is string mensaje)
+        {
+            <div class="aviso aviso-ok">@mensaje</div>
+        }
+        @if (TempData["MensajeError"] is string mensajeError)
+        {
+            <div class="aviso aviso-error">@mensajeError</div>
+        }
+
+        @RenderBody()
+    </main>
+
+    <footer class="pie-pagina">
+        StudyIA - Proyecto de cátedra - Universidad Don Bosco
+    </footer>
+
+    @* Al enviar un formulario lento (IA o archivos) se bloquea el botón y se avisa que está trabajando *@
+    <script>
+        document.addEventListener('submit', function (e) {
+            var f = e.target;
+            if (!f || !f.hasAttribute || !f.hasAttribute('data-cargando')) { return; }
+            var b = f.querySelector('button[type=submit]');
+            if (b) { b.disabled = true; b.textContent = f.getAttribute('data-cargando'); }
+        }, true);
+        // Si el usuario vuelve con el botón "atrás", se recarga para no dejar el botón bloqueado.
+        window.addEventListener('pageshow', function (e) { if (e.persisted) { location.reload(); } });
+    </script>
+</body>
+</html>
